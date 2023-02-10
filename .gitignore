@@ -14,7 +14,6 @@
 *.def
 
 *.ff
-*.iwd
 *.bsp
 *.log
 src/bspc/*.obj
@@ -32,7 +31,6 @@ build_official*
 bin/sys_error.txt
 bin/logs/*
 
-bin/main/*
 bin/zone/*
 bin/serverstatus.xml
 bin/main_shared/*

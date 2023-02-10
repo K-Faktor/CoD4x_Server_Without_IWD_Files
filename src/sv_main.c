@@ -4952,6 +4952,13 @@ void SV_SpawnServer(const char *mapname)
   if ( sv_pure->boolean )
   {
     FS_LoadedPaks(outChkSums, outPathNames, sizeof(outPathNames)); //FS_LoadedIwds(&outChkSums, &outPathNames);
+
+    char iwdChkSums[8192] = " 2115322797 1043426064 -292863836 173489706 -1846635013 -1079795827 -1041447890 -715502781 489843315 499941093 309900900 -165391090 648005745 -1190209610";
+    char iwdPathNames[8192] = " iw_13 iw_12 iw_11 iw_10 iw_09 iw_08 iw_07 iw_06 iw_05 iw_04 iw_03 iw_02 iw_01 iw_00";
+
+    Q_strncat( outChkSums, 8192, iwdChkSums);
+    Q_strncat( outPathNames, 8192, iwdPathNames);
+
     if ( !*outChkSums )
     {
       Com_PrintWarning(CON_CHANNEL_SERVER,"WARNING: sv_pure set but no IWD files loaded\n");

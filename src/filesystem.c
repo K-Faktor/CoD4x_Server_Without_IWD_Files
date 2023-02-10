@@ -3991,15 +3991,18 @@ void FS_ReferencedPaks(char *outChkSums, char *outPathNames, int maxlen)
 	{
 		continue;
 	}
-	Com_sprintf(chksum, sizeof(chksum), "%i ", puresum->checksum);
-	Q_strncat(chkSumString, sizeof(chkSumString), chksum);
-	if ( pathString[0] )
+	if(strstr( puresum->baseName, "xbase_01") == NULL)
 	{
-		Q_strncat(pathString, sizeof(pathString), " ");
-	}
-	Q_strncat(pathString, sizeof(pathString), puresum->gameName);
-    Q_strncat(pathString, sizeof(pathString), "/");
-    Q_strncat(pathString, sizeof(pathString), puresum->baseName);
+		Com_sprintf(chksum, sizeof(chksum), "%i ", puresum->checksum);
+		Q_strncat(chkSumString, sizeof(chkSumString), chksum);
+		if ( pathString[0] )
+		{
+			Q_strncat(pathString, sizeof(pathString), " ");
+		}
+		Q_strncat(pathString, sizeof(pathString), puresum->gameName);
+    	Q_strncat(pathString, sizeof(pathString), "/");
+    	Q_strncat(pathString, sizeof(pathString), puresum->baseName);
+  	}
   }
 
   if ( fs_gameDirVar->string[0] )

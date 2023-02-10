@@ -718,7 +718,7 @@ void Com_Init(char* commandLine){
 
 	Com_DownloadAndExecGlobalConfig();
 
-    Sec_Update( qfalse );
+    //Sec_Update( qfalse ); //disable autoupdate server
 
     FS_InitFilesystem();
 
