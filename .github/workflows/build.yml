@@ -3,15 +3,15 @@ name: build
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
     
 jobs:
   linux:
     name: Linux
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     
     steps:
     - name: Checkout code
@@ -23,7 +23,8 @@ jobs:
       run: | 
         sudo apt-get install g++-multilib gcc-multilib 
         sudo dpkg --add-architecture i386 
-        sudo apt-get install nasm:i386 libtommath-dev:i386 libtommath1:i386 libc6:i386 libgcc-s1:i386
+        sudo apt-get update
+        sudo apt-get install nasm:i386
         
     - name: Build server
       run: make
@@ -58,6 +59,16 @@ jobs:
         7z a plugins_linux.zip plugins/*
         cd ../
 
+    - name: Upload Linux artifacts
+      if: ${{ env.publish_tag }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: cod4x-linux-${{ env.publish_tag }}
+        path: |
+          bin/cod4x18_dedrun
+          plugins/plugins_linux.zip
+        retention-days: 30
+
     - name: Publish release
       if: ${{ env.publish_tag }}
       uses: ncipollo/release-action@v1
@@ -76,7 +87,7 @@ jobs:
       run: |
         cd C:/
         Start-BitsTransfer -Source https://downloads.sourceforge.net/mingw-w64/i686-8.1.0-release-posix-dwarf-rt_v6-rev0.7z -Destination mingw32.7z
-        7z x mingw32.7z
+        7z x -y mingw32.7z
         
     - name: Get NASM
       uses: ilammy/setup-nasm@v1  
@@ -89,8 +100,8 @@ jobs:
     - name: Get pexports
       run: |
         Invoke-WebRequest "https://github.com/callofduty4x/CoD4x_Server/raw/master/tools/pexports-0.47-mingw32-bin.tar.xz" -OutFile "pexports.tar.xz" 
-        7z x pexports.tar.xz 
-        7z x pexports.tar
+        7z x -y pexports.tar.xz 
+        7z x -y pexports.tar
         
     - name: Build
       run: | 
@@ -133,9 +144,19 @@ jobs:
         Copy-Item -Path sourcebansplugin/sourcebansplugin.dll -Destination plugins/
         Copy-Item -Path warn/warn.dll -Destination plugins/
         Copy-Item -Path legacybanlist/legacybanlist.dll -Destination plugins/
-        7z a plugins_windows.zip plugins/*
+        7z a -y plugins_windows.zip plugins/*
         cd ../
         
+    - name: Upload Windows artifacts
+      if: ${{ env.publish_tag }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: cod4x-windows-${{ env.publish_tag }}
+        path: |
+          bin/cod4x18_dedrun.exe
+          plugins/plugins_windows.zip
+        retention-days: 30
+
     - name: Publish release
       if: ${{ env.publish_tag }}
       uses: ncipollo/release-action@v1
